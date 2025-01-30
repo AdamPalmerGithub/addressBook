@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "myapp",
 ]
 
 MIDDLEWARE = [
@@ -78,9 +79,9 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "ab_app",
         "USER": "root",
-        "PASSWORD": "root",
-        "HOST":"",
-        "PORT":"",
+        "PASSWORD": "20Mills24",
+        "HOST":"localhost",
+        "PORT":"3306",
     }
 }
 
@@ -125,3 +126,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# User type
+AUTH_USER_MODEL = "myapp.ABUser"
