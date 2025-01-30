@@ -3,10 +3,10 @@ from django.shortcuts import render
 
 # Create your views here.
 def landing(request):
-    return render(request,"myapp/index.html",{})
+    return render(request,"index.html",{})
 
 def login(request):
-    return render(request, "myapp/login.html",{})
+    return render(request, "login.html",{})
 
 @login_required
 def app(request):
