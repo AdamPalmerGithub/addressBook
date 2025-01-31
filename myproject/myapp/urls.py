@@ -23,6 +23,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.landing, name="landing"),
     path("login/", views.login, name="login"),
+    path("loginuser/", views.loginuser, name="loginuser"),
     path("signup/",views.signup, name="signup"),
     path("adduser/", views.adduser, name="adduser"),
+    path("logout/", views.logoutuser, name="logoutuser"),
+    path("app/", views.app, name="app"),
 ]
