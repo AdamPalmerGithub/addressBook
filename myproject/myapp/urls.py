@@ -25,4 +25,8 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("signup/",views.signup, name="signup"),
     path("adduser/", views.adduser, name="adduser"),
+    path('addressBook/', views.addressBook, name='addressBook'),
+    path('addContact/', views.addContact, name='addContact'),
+    path('addContactsubmit/', views.addContactsubmit, name='addContactsubmit'),
 ]
+
