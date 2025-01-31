@@ -38,7 +38,6 @@ def loginuser(request):
     else:
         return render(request, "login.html", {"error": "Invalid Credentials"})
 
-# addressBook.html
 
 def logoutuser(request):
     auth_out(request)
@@ -46,9 +45,6 @@ def logoutuser(request):
 
 
 @login_required(login_url="login")
-def addressBook(request):
-    return render(request, 'addressBook.html', {"user":request.user})
-
 def addressBook(request):
     user = request.user
     mycontacts = Contact.objects.filter(addr_bk_id_id=user)
@@ -77,3 +73,7 @@ def addContactsubmit(request):
         )
         return redirect('addressBook')
     return render(request, "addContact.html")
+
+@login_required(login_url="login")
+def settings(request):
+    return render(request, "settings.html")
