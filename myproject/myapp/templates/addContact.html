@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Form</title>
+</head>
+<body>
+    <h2>Enter Your Details</h2>
+    <form action="{% url 'addContactsubmit' %}" method="post">
+        {% csrf_token %}
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required>
+        <br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required>
+        <br><br>
+
+        <label for="email_address">Email:</label>
+        <input type="email" id="email_address" name="email_address">
+        <br><br>
+
+        <label for="email">Phone Number:</label>
+        <input type="number" id="email" name="email">
+        <br><br>
+
+        <label for="postcode">Postcode:</label>
+        <input type="text" id="postcode" name="postcode">
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

@@ -27,5 +27,7 @@ urlpatterns = [
     path("signup/",views.signup, name="signup"),
     path("adduser/", views.adduser, name="adduser"),
     path("logout/", views.logoutuser, name="logoutuser"),
-    path("app/", views.app, name="app"),
+    path("addressBook/", views.addressBook, name="addressBook"),
+    path('addContact/', views.addContact, name='addContact'),
+    path('addContactsubmit/', views.addContactsubmit, name='addContactsubmit')
 ]
