@@ -3,87 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    form {
-        max-width: 400px;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-    }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-    input {
-        width: calc(100% - 20px);
-        padding: 8px 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+        input {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-    input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 15px;
-    }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+        }
 
-    input[type="submit"]:hover {
-        background-color: #218838;
-    }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
 
-    a {
-        display: block;
-        font-size: 11px;
-        text-align:center;
-        text-decoration: none;
-        background: #007BFF;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        margin: 10px auto;
-        transition: 0.3s;
-    }
+        a {
+            display: block;
+            font-size: 11px;
+            text-align:center;
+            text-decoration: none;
+            background: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 10px auto;
+            transition: 0.3s;
+        }
 
-    a:hover {
-        background: #0056b3;
-    }
-  </style>
+        a:hover {
+            background: #0056b3;
+        }
+        .names {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .first, .last {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
-<form name="signup" method="post" action="../signup/">
-    <h2 style="text-align:center;">Signup</h2>
-    {% csrf_token %}
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" placeholder="Enter your Name">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" placeholder="Enter your Email">
-    <label for="contact">Contact Number:</label>
-    <input type="tel" id="contact" name="contact" placeholder="Enter your Contact Number">
-    <label for="pwd">Password:</label>
-    <input id="pwd" name="pwd" type="password" placeholder="Enter a password">
-  <input type="submit" name="reg" value="Click to Register">
-  <a id="login" href="/login">Got an account? Login here :)</a>
-</form>
+<div>
+    <form name="signup" method="post" action="../adduser/">
+        <h2 style="text-align:center;">Signup</h2>
+        {% csrf_token %}
+        <label for="user">Username:</label>
+        <input type="text" id="user" name="user" placeholder="Enter a username">
+        <div class="names">
+            <div class="first">
+                <label for="first">Firstname:</label>
+                <input type="text" id="first" name="first" placeholder="Enter your First name">
+            </div>
+            <div class="last">
+                <label for="last">Lastname:</label>
+                <input type="text" id="last" name="last" placeholder="Enter your last name">
+            </div>
+        </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your Email">
+        <label for="contact">Contact Number:</label>
+        <input type="tel" id="contact" name="contact" placeholder="Enter your Contact Number">
+
+        <label for="pwd">Password:</label>
+        <input id="pwd" name="pwd" type="password" placeholder="Enter a password">
+
+        <input type="submit" name="reg" value="Click to Register">
+    </form>
+    <a id="login" href="/login">Got an account? Login here :)</a>
+</div>
 </body>
 </html>

@@ -9,6 +9,8 @@ from django.db import models
 class ABUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone_number = models.CharField(max_length=20)
+
+
 # Contact - associated with ABUser's addr_bk_id
 class Contact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
