@@ -4,43 +4,114 @@
     <meta charset="UTF-8">
     <title>Settings</title>
     <style>
-         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-         .btn {
-            background-color:#444;
-            border-radius:10px;
-        }
-        .del {
-            background-color: #8B0000
-        }
-        a {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 10px;
-            border-radius: 5px;
-            transition: 0.3s;
-            text-decoration: none;
-            color: white;
-        }
+        body {
+           font-family: Arial, sans-serif;
+           background-color: #f4f4f4;
+           margin: 0;
+           padding: 20px;
+           text-align: center;
+       }
+        .btn {
+           background-color:#444;
+           border-radius:10px;
+       }
+       .del {
+           background-color: #8B0000
+       }
+       a {
+           display: inline-block;
+           padding: 10px 20px;
+           margin: 10px;
+           border-radius: 5px;
+           transition: 0.3s;
+           text-decoration: none;
+           color: white;
+       }
+       form, .delete {
+           max-width: 400px;
+           margin: auto;
+           padding: 20px;
+           border: 1px solid #ccc;
+           border-radius: 8px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       }
+
+       label {
+           display: block;
+           margin-bottom: 8px;
+           font-weight: bold;
+       }
+
+       input {
+           width: calc(100% - 20px);
+           padding: 8px 10px;
+           margin-bottom: 15px;
+           border: 1px solid #ccc;
+           border-radius: 4px;
+       }
+
+       input[type="submit"] {
+           width: 100%;
+           padding: 10px;
+           background-color: #28a745;
+           color: white;
+           border: none;
+           border-radius: 4px;
+           cursor: pointer;
+           font-size: 15px;
+       }
+
+       input[type="submit"]:hover {
+           background-color: #218838;
+       }
+
+       .names {
+           display: flex;
+           flex-direction: row;
+           align-items: center;
+       }
+       .first, .last {
+           display: flex;
+           flex-direction: column;
+       }
     </style>
 </head>
 <body>
 <header>
     <a class="btn" href="../addressBook">Back</a>
 </header>
-    <div class="update">
-        <div class="conf">
-            <a class="btn">Confirm Updates</a>
+<div class="update">
+    <form name="update" method="post" action="../update/">
+        <h2 style="text-align:center;">Update Information</h2>
+        <p>Updating account details will require login again.</p>
+        {% csrf_token %}
+        <label for="user">Username:</label>
+        <input type="text" id="user" name="user" value="{{ user.username }}">
+        <div class="names">
+            <div class="first">
+                <label for="first">Firstname:</label>
+                <input type="text" id="first" name="first" value="{{ user.first_name }}">
+            </div>
+            <div class="last">
+                <label for="last">Lastname:</label>
+                <input type="text" id="last" name="last" value="{{ user.last_name }}">
+            </div>
         </div>
-    </div>
-    <div class="delete">
-<!--        Redirect to a sep page that asks confirmation then delete user and redirect to landing-->
-        <a class="btn del">Delete User</a>
-    </div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" value="{{ user.email }}">
+        <label for="contact">Contact Number:</label>
+        <input type="tel" id="contact" name="contact" value="{{ user.phone_number }}">
+
+        <label for="pwd">Password:</label>
+        <input id="pwd" name="pwd" type="password" placeholder="Enter a new password">
+        <p>Password will not change if field is left blank</p>
+        <input type="submit" class="btn conf" value="Confirm Updates">
+    </form>
+</div>
+
+<div class="delete">
+    <h3>This will permantently delete your account and it's data.</h3>
+    <a class="btn del">Delete User</a>
+</div>
 </body>
 </html>

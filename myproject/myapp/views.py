@@ -77,3 +77,27 @@ def addContactsubmit(request):
 @login_required(login_url="login")
 def settings(request):
     return render(request, "settings.html")
+
+@login_required(login_url="login")
+def updateUser(request):
+    user = request.user
+    return render(request, "updateUser.html", {"user":user})
+
+@login_required(login_url="login")
+def update(request):
+    if request.method == "POST":
+        user=ABUser.objects.get(id=request.user.id)
+
+        user.username = request.POST.get("user")
+        user.first_name = request.POST.get("first")
+        user.last_name = request.POST.get("last")
+        user.phone_number = request.POST.get("contact")
+        user.email = request.POST.get("email")
+
+        password=request.POST.get("pwd")
+        if len(password) > 1:
+            user.set_password(password)
+
+        user.save()
+        return redirect("login")
+    return render(request,"settings.html", {"user",request.user})
