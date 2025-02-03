@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.landing, name="landing"),
@@ -32,4 +33,7 @@ urlpatterns = [
     path('addContactsubmit/', views.addContactsubmit, name='addContactsubmit'),
     path('settings/', views.settings,name="settings"),
     path('update/', views.update, name="update"),
+    path('deleteContact/<str:id>/', views.deleteContact, name='deleteContact'),
+    path('updateContact/<str:id>/', views.updateContact, name='updateContact'),
+    path('updateContactSubmit/<str:id>/', views.updateContactSubmit, name='updateContactSubmit'),
 ]
