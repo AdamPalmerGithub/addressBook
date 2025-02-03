@@ -49,10 +49,10 @@
         #add:hover {
             background-color: #0056b3;
         }
-        #edit {
+        #update {
             background-color: #28a745;
         }
-        #edit:hover {
+        #update:hover {
             background-color: #218838;
         }
         #delete {
@@ -98,6 +98,12 @@
 <td>{{ contact.email_address }}</td>
 <td>{{ contact.phone_number }}</td>
 <td>{{ contact.postcode }}</td>
+<td>
+    <a id="update" href="{% url 'updateContact' id=contact.id %}" class="btn">Update</a>
+</td>
+<td>
+    <a id="delete" href="{% url 'deleteContact' id=contact.id %}" class="btn" onclick="return confirm('Are you sure?');">Delete</a>
+</td>
 </tr>
         {% empty %}
 <tr>
@@ -106,10 +112,9 @@
         {% endfor %}
 </table>
 
-<a id="add" href="{% url 'addContact' %}">Add</a>
+<a id="add" href="{% url 'addContact' %}" class="'btn">Add</a>
 
 </div>
 
 </body>
 </html>
-

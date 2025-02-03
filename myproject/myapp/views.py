@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import ABUser, Contact
 from django.contrib.auth import authenticate, login as auth_in, logout as auth_out
 from django.contrib.auth.decorators import login_required
@@ -73,6 +73,32 @@ def addContactsubmit(request):
         )
         return redirect('addressBook')
     return render(request, "addContact.html")
+
+@login_required(login_url="login")
+def updateContact(request, id):
+    contact = get_object_or_404(Contact, id=id)
+    return render(request, "updateContact.html", {"contact": contact})
+
+@login_required(login_url="login")
+def updateContactSubmit(request, id=id):
+    contact = get_object_or_404(Contact, id=id)
+
+    if request.method == "POST":
+        contact.first_name = request.POST["first_name"]
+        contact.last_name = request.POST["last_name"]
+        contact.email_address = request.POST["email_address"]
+        contact.phone_number = request.POST["phone_number"]
+        contact.postcode = request.POST["postcode"]
+        contact.save()
+
+        return redirect("addressBook")
+    return render(request, "updateContact.html", {"contact": contact})
+
+@login_required(login_url="login")
+def deleteContact(request, id):
+    contact = get_object_or_404(Contact, id=id)
+    contact.delete()
+    return redirect('addressBook')
 
 @login_required(login_url="login")
 def settings(request):
