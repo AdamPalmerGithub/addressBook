@@ -33,6 +33,7 @@ urlpatterns = [
     path('addContactsubmit/', views.addContactsubmit, name='addContactsubmit'),
     path('settings/', views.settings,name="settings"),
     path('update/', views.update, name="update"),
+    path('delete/', views.delete, name="delete"),
     path('deleteContact/<str:id>/', views.deleteContact, name='deleteContact'),
     path('updateContact/<str:id>/', views.updateContact, name='updateContact'),
     path('updateContactSubmit/<str:id>/', views.updateContactSubmit, name='updateContactSubmit'),

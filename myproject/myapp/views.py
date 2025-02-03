@@ -127,3 +127,9 @@ def update(request):
         user.save()
         return redirect("login")
     return render(request,"settings.html", {"user",request.user})
+
+@login_required(login_url="login")
+def delete(request):
+    del_user=ABUser.objects.get(id=request.user.id)
+    del_user.delete()
+    return redirect("login")
