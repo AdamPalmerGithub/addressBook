@@ -4,8 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Contact</title>
+    <style>
+        a {
+           display: inline-block;
+           padding: 10px 20px;
+           margin: 10px;
+           border-radius: 5px;
+           transition: 0.3s;
+           text-decoration: none;
+           color: white;
+       }
+        .btn {
+           background-color:#444;
+           border-radius:10px;
+       }
+    </style>
 </head>
 <body>
+    <header>
+        <a class="btn" href="{% url 'addressBook' %}">Back</a>
+    </header>
     <h2>Update Contact's Details</h2>
     <form action="{% url 'updateContactSubmit' id=contact.id %}" method="post">
         {% csrf_token %}
