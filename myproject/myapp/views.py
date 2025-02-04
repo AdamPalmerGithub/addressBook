@@ -47,8 +47,13 @@ def logoutuser(request):
 @login_required(login_url="login")
 def addressBook(request):
     user = request.user
-    mycontacts = Contact.objects.filter(addr_bk_id_id=user)
-    return render(request, 'addressBook.html', {'user': user, 'mycontacts': mycontacts})
+    sort_by = request.GET.get("sort", "first_name")
+    order_by = request.GET.get("order", "asc")
+
+    if order_by == "desc":
+        sort_by = f"-{sort_by}"
+    mycontacts = Contact.objects.filter(addr_bk_id_id=user).order_by(sort_by)
+    return render(request, 'addressBook.html', {'user': user, 'mycontacts': mycontacts, "sort_by": sort_by})
 
 @login_required(login_url="login")
 def addContact(request):
@@ -133,3 +138,4 @@ def delete(request):
     del_user=ABUser.objects.get(id=request.user.id)
     del_user.delete()
     return redirect("login")
+

@@ -83,6 +83,22 @@
 </header>
 <div class="container">
 <h1> Contacts</h1>
+
+<form method="GET">
+    <label for="sort">Sort By:</label>
+    <select name="sort" id="sort">
+        <option value="first_name" {% if sort_by == "first_name" %}selected{% endif %}>First Name</option>
+        <option value="last_name" {% if sort_by == "last_name" %}selected{% endif %}>Last Name</option>
+        <option value="date_added" {% if sort_by == "date_added" %}selected{% endif %}>Date Added</option>
+    </select>
+    <label for="order">Order By:</label>
+    <select name="order" id="order">
+        <option value="asc" {% if order_by == "asc" %}selected{% endif %}>Ascending</option>
+        <option value="desc" {% if order_by == "desc" %}selected{% endif %}>Descending</option>
+    </select>
+    <button type="submit">Sort</button>
+</form>
+
 <table>
 <tr>
 <th>First Name</th>
