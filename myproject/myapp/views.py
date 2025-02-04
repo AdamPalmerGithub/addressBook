@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ABUser, Contact
 from django.contrib.auth import authenticate, login as auth_in, logout as auth_out
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required, permission_required
 
 
 # Create your views here.
@@ -18,7 +19,8 @@ def signup(request):
 
 
 def adduser(request):
-    ABUser.objects.create_user(
+    user_group = Group.objects.get(name='user')
+    new_user = ABUser.objects.create_user(
         username=request.POST['user'],
         first_name=request.POST['first'],
         last_name=request.POST['last'],
@@ -26,6 +28,7 @@ def adduser(request):
         phone_number=request.POST['contact'],
         email=request.POST['email'],
     )
+    new_user.groups.add(user_group)
 
     return redirect("loginuser")
 
@@ -44,6 +47,7 @@ def logoutuser(request):
     return redirect("landing")
 
 
+@permission_required('myapp.view_contact', raise_exception=True)
 @login_required(login_url="login")
 def addressBook(request):
     user = request.user
@@ -55,10 +59,14 @@ def addressBook(request):
     mycontacts = Contact.objects.filter(addr_bk_id_id=user).order_by(sort_by)
     return render(request, 'addressBook.html', {'user': user, 'mycontacts': mycontacts, "sort_by": sort_by})
 
+
+@permission_required('myapp.add_contact', raise_exception=True)
 @login_required(login_url="login")
 def addContact(request):
     return render(request, "addContact.html", {})
 
+
+@permission_required('myapp.add_contact', raise_exception=True)
 @login_required(login_url="login")
 def addContactsubmit(request):
     if request.method == "POST":
@@ -79,11 +87,16 @@ def addContactsubmit(request):
         return redirect('addressBook')
     return render(request, "addContact.html")
 
+
 @login_required(login_url="login")
 def updateContact(request, id):
     contact = get_object_or_404(Contact, id=id)
     return render(request, "updateContact.html", {"contact": contact})
 
+
+
+
+@permission_required('myapp.change_contact', raise_exception=True)
 @login_required(login_url="login")
 def updateContactSubmit(request, id=id):
     contact = get_object_or_404(Contact, id=id)
@@ -99,6 +112,7 @@ def updateContactSubmit(request, id=id):
         return redirect("addressBook")
     return render(request, "updateContact.html", {"contact": contact})
 
+@permission_required('myapp.delete_contact', raise_exception=True)
 @login_required(login_url="login")
 def deleteContact(request, id):
     contact = get_object_or_404(Contact, id=id)
@@ -114,6 +128,7 @@ def updateUser(request):
     user = request.user
     return render(request, "updateUser.html", {"user":user})
 
+@permission_required(perm='myapp.change_abuser', raise_exception=True)
 @login_required(login_url="login")
 def update(request):
     if request.method == "POST":
@@ -133,9 +148,9 @@ def update(request):
         return redirect("login")
     return render(request,"settings.html", {"user",request.user})
 
+@permission_required(perm='myapp.delete_abuser', raise_exception=True)
 @login_required(login_url="login")
 def delete(request):
     del_user=ABUser.objects.get(id=request.user.id)
     del_user.delete()
     return redirect("login")
-
