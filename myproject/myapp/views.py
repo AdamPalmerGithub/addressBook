@@ -1,9 +1,9 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ABUser, Contact
 from django.contrib.auth import authenticate, login as auth_in, logout as auth_out
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
-
 
 # Create your views here.
 def landing(request):
@@ -47,7 +47,7 @@ def logoutuser(request):
     return redirect("landing")
 
 
-@permission_required('myapp.view_contact', raise_exception=True)
+@permission_required('myapp.view_contact', login_url="login")
 @login_required(login_url="login")
 def addressBook(request):
     user = request.user
@@ -60,13 +60,13 @@ def addressBook(request):
     return render(request, 'addressBook.html', {'user': user, 'mycontacts': mycontacts, "sort_by": sort_by})
 
 
-@permission_required('myapp.add_contact', raise_exception=True)
+@permission_required('myapp.view_contact', login_url="login")
 @login_required(login_url="login")
 def addContact(request):
     return render(request, "addContact.html", {})
 
 
-@permission_required('myapp.add_contact', raise_exception=True)
+@permission_required('myapp.add_contact', login_url="login")
 @login_required(login_url="login")
 def addContactsubmit(request):
     if request.method == "POST":
@@ -96,7 +96,7 @@ def updateContact(request, id):
 
 
 
-@permission_required('myapp.change_contact', raise_exception=True)
+@permission_required('myapp.change_contact', login_url="login")
 @login_required(login_url="login")
 def updateContactSubmit(request, id=id):
     contact = get_object_or_404(Contact, id=id)
@@ -112,7 +112,7 @@ def updateContactSubmit(request, id=id):
         return redirect("addressBook")
     return render(request, "updateContact.html", {"contact": contact})
 
-@permission_required('myapp.delete_contact', raise_exception=True)
+@permission_required('myapp.delete_contact', login_url="login")
 @login_required(login_url="login")
 def deleteContact(request, id):
     contact = get_object_or_404(Contact, id=id)
@@ -128,7 +128,7 @@ def updateUser(request):
     user = request.user
     return render(request, "updateUser.html", {"user":user})
 
-@permission_required(perm='myapp.change_abuser', raise_exception=True)
+@permission_required(perm='myapp.change_abuser', login_url="login")
 @login_required(login_url="login")
 def update(request):
     if request.method == "POST":
@@ -148,9 +148,28 @@ def update(request):
         return redirect("login")
     return render(request,"settings.html", {"user",request.user})
 
-@permission_required(perm='myapp.delete_abuser', raise_exception=True)
+@permission_required(perm='myapp.delete_abuser', login_url="login")
 @login_required(login_url="login")
 def delete(request):
     del_user=ABUser.objects.get(id=request.user.id)
     del_user.delete()
     return redirect("login")
+
+@permission_required(perm="myapp.can_access_calendar", login_url="login")
+@login_required(login_url="login")
+def calendar(request, id):
+    event_participant = Contact.objects.get(id=id)
+
+    url = f"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Event+with+{ event_participant.first_name }+{ event_participant.last_name }"
+
+    html_content = f"""
+            <html>
+                <body>
+                    <script type="text/javascript">
+                        window.open("{url}", "_blank");
+                        window.location.href = "/addressBook";
+                    </script>
+                </body>
+            </html>
+        """
+    return HttpResponse(html_content)

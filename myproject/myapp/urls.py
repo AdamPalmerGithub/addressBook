@@ -37,4 +37,5 @@ urlpatterns = [
     path('deleteContact/<str:id>/', views.deleteContact, name='deleteContact'),
     path('updateContact/<str:id>/', views.updateContact, name='updateContact'),
     path('updateContactSubmit/<str:id>/', views.updateContactSubmit, name='updateContactSubmit'),
+    path('calendar/<str:id>', views.calendar, name='calendar'),
 ]

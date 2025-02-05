@@ -62,7 +62,11 @@
             background-color: #992c2c;
         }
         .btn {
-            background-color:#444;border-radius:10px;
+            background-color:#000;
+            border-radius:10px;
+        }
+        .btn:hover {
+            background-color:#444;
         }
         .logout {
             padding: 10px;
@@ -77,60 +81,67 @@
 </style>
 </head>
 <body>
-<header>
-    <a class="btn" href="../settings">Settings</a>
-    <a class="btn logout" href="../logout">Logout</a>
-</header>
-<div class="container">
-<h1> Contacts</h1>
+    <header>
+        <a class="btn" href="../settings">Settings</a>
+        <a class="btn logout" href="../logout">Logout</a>
+    </header>
+    <div class="container">
+        <h1> Contacts</h1>
 
-<form method="GET">
-    <label for="sort">Sort By:</label>
-    <select name="sort" id="sort">
-        <option value="first_name" {% if sort_by == "first_name" %}selected{% endif %}>First Name</option>
-        <option value="last_name" {% if sort_by == "last_name" %}selected{% endif %}>Last Name</option>
-        <option value="date_added" {% if sort_by == "date_added" %}selected{% endif %}>Date Added</option>
-    </select>
-    <label for="order">Order By:</label>
-    <select name="order" id="order">
-        <option value="asc" {% if order_by == "asc" %}selected{% endif %}>Ascending</option>
-        <option value="desc" {% if order_by == "desc" %}selected{% endif %}>Descending</option>
-    </select>
-    <button type="submit">Sort</button>
-</form>
+        <form method="GET">
+            <label for="sort">Sort By:</label>
+            <select name="sort" id="sort">
+                <option value="first_name" {% if sort_by == "first_name" %}selected{% endif %}>First Name</option>
+                <option value="last_name" {% if sort_by == "last_name" %}selected{% endif %}>Last Name</option>
+                <option value="date_added" {% if sort_by == "date_added" %}selected{% endif %}>Date Added</option>
+            </select>
+            <label for="order">Order By:</label>
+            <select name="order" id="order">
+                <option value="asc" {% if order_by == "asc" %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order_by == "desc" %}selected{% endif %}>Descending</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
 
-<table>
-<tr>
-<th>First Name</th>
-<th>Last Name</th>
-<th>Email</th>
-<th>Phone</th>
-<th>Postcode</th>
-</tr>
-        {% for contact in mycontacts %}
-<tr>
-<td>{{ contact.first_name }}</td>
-<td>{{ contact.last_name }}</td>
-<td>{{ contact.email_address }}</td>
-<td>{{ contact.phone_number }}</td>
-<td>{{ contact.postcode }}</td>
-<td>
-    <a id="update" href="{% url 'updateContact' id=contact.id %}" class="btn">Update</a>
-</td>
-<td>
-    <a id="delete" href="{% url 'deleteContact' id=contact.id %}" class="btn" onclick="return confirm('Are you sure?');">Delete</a>
-</td>
-</tr>
-        {% empty %}
-<tr>
-<td colspan="5" style="text-align: center;">No contacts found.</td>
-</tr>
-        {% endfor %}
-</table>
+        <table>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Postcode</th>
+            </tr>
+            {% for contact in mycontacts %}
+                <tr>
+                    <td>{{ contact.first_name }}</td>
+                    <td>{{ contact.last_name }}</td>
+                    <td>{{ contact.email_address }}</td>
+                    <td>{{ contact.phone_number }}</td>
+                    <td>{{ contact.postcode }}</td>
+                    <td>
+                        <a id="update" href="{% url 'updateContact' id=contact.id %}" class="btn">
+                            Update
+                        </a>
+                    </td>
+                    <td>
+                        <a id="delete" href="{% url 'deleteContact' id=contact.id %}" class="btn" onclick="return confirm('Are you sure?');">
+                            Delete
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn" href="{% url 'calendar' id=contact.id %}">
+                            Add to Google Calendar
+                        </a>
+                    </td>
+                </tr>
+                        {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">No contacts found.</td>
+                </tr>
+            {% endfor %}
+        </table>
 
-<a id="add" href="{% url 'addContact' %}" class="'btn">Add</a>
-
-</div>
-
+        <a id="add" href="{% url 'addContact' %}" class="'btn">Add</a>
+    </div>
 </body>
 </html>
