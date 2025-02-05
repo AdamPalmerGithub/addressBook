@@ -96,6 +96,10 @@
         <option value="asc" {% if order_by == "asc" %}selected{% endif %}>Ascending</option>
         <option value="desc" {% if order_by == "desc" %}selected{% endif %}>Descending</option>
     </select>
+    
+    <label for="search">Search:</label>
+    <input type="text" name="search" id="search" placeholder="Enter name or email..." value="{{ search_query|default:'' }}">
+    
     <button type="submit">Sort</button>
 </form>
 

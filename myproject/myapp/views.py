@@ -3,6 +3,8 @@ from .models import ABUser, Contact
 from django.contrib.auth import authenticate, login as auth_in, logout as auth_out
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Q
+
 
 
 # Create your views here.
@@ -53,11 +55,28 @@ def addressBook(request):
     user = request.user
     sort_by = request.GET.get("sort", "first_name")
     order_by = request.GET.get("order", "asc")
+    search_query = request.GET.get("search", "").strip()
 
-    if order_by == "desc":
-        sort_by = f"-{sort_by}"
-    mycontacts = Contact.objects.filter(addr_bk_id_id=user).order_by(sort_by)
-    return render(request, 'addressBook.html', {'user': user, 'mycontacts': mycontacts, "sort_by": sort_by})
+    sorted_field = f"-{sort_by}" if order_by == "desc" else sort_by
+
+    mycontacts = Contact.objects.filter(addr_bk_id_id=user)
+    
+    if search_query:
+        mycontacts = mycontacts.filter(
+            Q(first_name__icontains=search_query) |  
+            Q(last_name__icontains=search_query) |  
+            Q(email_address__icontains=search_query)
+    )
+
+    mycontacts = mycontacts.order_by(sorted_field)
+
+    return render(request, "addressBook.html", {
+    "user": user,
+    "mycontacts": mycontacts,
+    "sort_by": sort_by,
+    "order_by": order_by,
+    "search_query": search_query
+})
 
 
 @permission_required('myapp.add_contact', raise_exception=True)
