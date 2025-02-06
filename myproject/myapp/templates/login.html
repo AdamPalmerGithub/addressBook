@@ -3,74 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        input {
-            width: calc(100% - 20px);
-            padding: 8px 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #218838;
-        }
-
-        a {
-            display: block;
-            font-size: 11px;
-            text-align:center;
-            text-decoration: none;
-            background: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            margin: 10px auto;
-            transition: 0.3s;
-        }
-
-        a:hover {
-            background: #0056b3;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+    <script src="{% static 'js/main.js' %}"></script>
 </head>
 <body>
+<header>
+    <button onclick="light()">Light</button>
+    <button onclick="dark()">Dark</button>
+</header>
 <div>
     <form name="login" method="post" action="../loginuser/">
         <h2 style="text-align:center;">Login</h2>
