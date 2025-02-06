@@ -5,11 +5,12 @@ from django.contrib.auth import authenticate, login as auth_in, logout as auth_o
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
+from datetime import datetime
 
-
+x=datetime.now
 # Create your views here.
 def landing(request):
-    return render(request, "index.html", {})
+    return render(request, "index.html", {'date': x})
 
 
 def login(request):
