@@ -85,6 +85,7 @@
         <a class="btn" href="../settings">Settings</a>
         <a class="btn logout" href="../logout">Logout</a>
     </header>
+    <h3>Todays date is {{date}}</h3>
     <div class="container">
         <h1> Contacts</h1>
 
@@ -133,9 +134,16 @@
                         </a>
                     </td>
                     <td>
-                        <a class="btn" href="{% url 'calendar' id=contact.id %}">
+                        <a  href="{% url 'calendar' id=contact.id %}" class="btn">
                             Add to Google Calendar
                         </a>
+                    </td>
+                    <td>
+                        {% if contact.postcode %}
+                            <a href="https://www.google.com/maps/place/{{ contact.postcode }}" target="_blank" class="btn">
+                                View on Maps
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                         {% empty %}
