@@ -5,11 +5,26 @@ from django.contrib.auth import authenticate, login as auth_in, logout as auth_o
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
-
+from datetime import datetime
+import requests
 
 # Create your views here.
 def landing(request):
-    return render(request, "index.html", {})
+    url = 'https://api.open-meteo.com/v1/forecast?latitude=51.9022&longitude=-0.2026&current=temperature_2m,relative_humidity_2m&wind_speed_unit=mph&forecast_days=1'
+    response = requests.get(url).json()
+    current_data = response.get("current", {})
+    time = current_data.get("time")
+    temperature = current_data.get("temperature_2m")
+    humidity = current_data.get("relative_humidity_2m")
+    date_today = datetime.now().strftime("%Y-%m-%d")
+    
+
+    return render(request, "index.html", {
+        "date": date_today,
+        "time": time,
+        "temperature": temperature,
+        "humidity": humidity
+    })
 
 
 def login(request):
@@ -47,6 +62,8 @@ def loginuser(request):
 def logoutuser(request):
     auth_out(request)
     return redirect("landing")
+
+  
 
 
 @permission_required('myapp.view_contact', login_url="login")
