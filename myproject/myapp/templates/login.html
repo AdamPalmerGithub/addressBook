@@ -9,10 +9,14 @@
 </head>
 <body>
 <header>
-    <button onclick="light()">Light</button>
-    <button onclick="dark()">Dark</button>
+    <select id="mode" onchange="choice(mode.value)">
+        <option value="system" selected disabled>System</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
 </header>
 <div>
+    <p>{{ error }}</p>
     <form name="login" method="post" action="../loginuser/">
         <h2 style="text-align:center;">Login</h2>
         {% csrf_token %}

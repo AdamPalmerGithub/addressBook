@@ -88,3 +88,7 @@ a {
 .logout:hover {
     background-color: #d32f2f;
 }
+
+.sort {
+    margin: 10px;
+}

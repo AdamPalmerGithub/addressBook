@@ -9,15 +9,18 @@
 </head>
 <body>
     <header>
-        <button onclick="light()">Light</button>
-        <button onclick="dark()">Dark</button>
+        <select id="mode" onchange="choice(mode.value)">
+            <option value="system" selected disabled>System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
         <a class="btn" href="../settings">Settings</a>
         <a class="btn logout" href="../logout">Logout</a>
     </header>
     <div class="container">
         <h1> Contacts</h1>
 
-        <form method="GET">
+        <form class="sort" method="GET">
             <label for="sort">Sort By:</label>
             <select name="sort" id="sort">
                 <option value="first_name" {% if sort_by == "first_name" %}selected{% endif %}>First Name</option>

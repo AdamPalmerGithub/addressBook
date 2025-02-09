@@ -32,7 +32,7 @@ def adduser(request):
     )
     new_user.groups.add(user_group)
 
-    return redirect("loginuser")
+    return redirect("login")
 
 
 def loginuser(request):

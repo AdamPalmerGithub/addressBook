@@ -1,3 +1,13 @@
+function choice(ch){
+    if (ch === "light") {
+        light()
+    } else if (ch === "dark") {
+        dark()
+    } else {
+        console.log("How?")
+    }
+}
+
 function light() {
    var element = document.body;
    element.className = ""
