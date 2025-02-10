@@ -33,6 +33,7 @@ The Address Book application is designed to help users manage their contacts eff
 - **Update Contact**: Edit existing contact details
 - **Delete Contact**: Remove unwanted contacts
 - **Add Event to Calendar**: Schedule events linked to contacts
+- **View Postcode in Maps**: View a contacts location on the maps
 - **Settings**: Modify user details or delete account
 - **Logout**: Sign out of the application
 
