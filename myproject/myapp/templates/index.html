@@ -3,57 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>AddressAdder | Welcome !</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        a {
-         padding: 10px 20px;
-
-            margin: 10px;
-
-            border-radius: 5px;
-
-            transition: 0.3s;
-
-            text-decoration: none;
-
-            color: white;
-        }
-        #login{
-            background-color: #007BFF;
-        }
-        #login:hover {
-            background-color: #0056b3;
-        }
-
-        #signup {
-            background-color: #28a745;
-        }
-        #signup:hover {
-            background-color: #218838;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/landing.css' %}">
 </head>
 <body>
-<div style="text-align: center;">
-    <div style="width: 500px; margin: 0 auto; background: #000; color: #fff;border-radius:15px;">
-        <h1 style="padding:10px;"> Welcome to AddressAdder </h1>
-        <h2>Todays date is {{date}}</h2>
+    <header>
+        <div class="container header-blend">
+            <h2>Current Date and time</h2>
+            <p id="date"><strong>Date:</strong> {{ date }}</p>
+            <p id="time"><strong>Time:</strong> {{ time }}</p>
+        </div>
+        <div class="container header-blend">
+            <h1 class="title"> Welcome to AddressAdder </h1>
+        </div>
+       <div class="container header-blend">
+            <h2>Weather</h2>
+            <p id="temp"><strong>Temperature:</strong> {{ temperature }}°C</p>
+            <p id="humidity"><strong>Humidity:</strong> {{ humidity }}%</p>
+           <button onclick="getLocation()">Use current location</button>
+       </div>
+    </header>
+    <div class="contents">
+        <div class="container tall">
+            <h1 class="emphasis"> The best way to record Your contacts<br> (I think) </h1>
+            <a id="login" href="/login">Login</a>
+            <a id="signup" href="/signup">Signup</a>
+        </div>
     </div>
-</div>
-<div style="text-align: center;">
-    <div style="width: 500px; margin: 0 auto; background: #000; color: #fff; padding:2px; border-radius:15px;">
-        <h1 style="padding:4px; font-size:25px;"> The best way to record Your contacts<br> (I think) </h1>
-        <a id="login" href="/login">Login</a>
-        <a id="signup" href="/signup">Signup</a>
-    </div>
-</div>
-    <h2>Weather in Stevenage</h2>
-    <p><strong>Date:</strong> {{ date }}</p>
-    <p><strong>Time:</strong> {{ time }}</p>
-    <p><strong>Temperature:</strong> {{ temperature }}°C</p>
-    <p><strong>Humidity:</strong> {{ humidity }}%</p>
-</ul>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

@@ -13,11 +13,13 @@ def landing(request):
     url = 'https://api.open-meteo.com/v1/forecast?latitude=51.9022&longitude=-0.2026&current=temperature_2m,relative_humidity_2m&wind_speed_unit=mph&forecast_days=1'
     response = requests.get(url).json()
     current_data = response.get("current", {})
-    time = current_data.get("time")
+    date_time = current_data.get("time")
+    dt = datetime.strptime(date_time, "%Y-%m-%dT%H:%M")
+    date_today = dt.strftime("%d-%m-%Y")
+    time = dt.strftime("%H:%M")
     temperature = current_data.get("temperature_2m")
     humidity = current_data.get("relative_humidity_2m")
-    date_today = datetime.now().strftime("%Y-%m-%d")
-    
+
 
     return render(request, "index.html", {
         "date": date_today,
