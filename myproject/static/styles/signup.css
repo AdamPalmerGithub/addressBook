@@ -1,5 +1,7 @@
 :root {
-    color-scheme: light dark;
+  color-scheme: light dark;
+  --light: #e0e0f0;
+  --dark: #28283d;
 }
 
 .light {
@@ -8,29 +10,56 @@
 .dark {
     color-scheme: dark;
 }
-
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: light-dark(var(--light), var(--dark));
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
 body {
-    color: light-dark(#333b3c, #efefec);
-    background-color: light-dark(#efedea, #223a2c);
+    color: light-dark(var(--light), var(--dark));
+    background-color: light-dark(var(--light), var(--dark));
     font-family: Arial, sans-serif;
     margin: 20px;
     padding: 20px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
-
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #ffffff;
+}
 form {
+    color: light-dark(black, white);
     max-width: 400px;
     margin: auto;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 label {
+    color: light-dark(black, white);
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
@@ -43,38 +72,29 @@ input {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
-input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-input[type="submit"]:hover {
-    background-color: #218838;
-}
-
-a {
-    display: block;
-    font-size: 11px;
-    text-align:center;
+a, button {
+    display: inline-block;
     text-decoration: none;
-    background: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin: 10px auto;
+    padding: 14px 28px;
+    border-radius: 30px;
+    background: rgba(255, 71, 126, 0.9);
+    color: #fff;
+    font-weight: bold;
     transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+}
+a:hover, button:hover{
+    background: rgba(255, 33, 86, 0.9);
+    transform: translateY(-3px);
 }
 
-a:hover {
-    background: #0056b3;
+p {
+    color: light-dark(black, white);
+    margin: 10px auto;
 }
+
 .names {
     display: flex;
     flex-direction: row;

@@ -10,12 +10,12 @@
 </head>
 <body>
     <header>
-        <a class="btn" href="{% url 'addressBook' %}">Back</a>
         <select id="mode" onchange="choice(mode.value)">
             <option value="system" selected disabled>System</option>
             <option value="light">Light</option>
             <option value="dark">Dark</option>
         </select>
+        <a class="btn" href="{% url 'addressBook' %}">Back</a>
     </header>
     <h2>Update Contact's Details</h2>
     <form action="{% url 'updateContactSubmit' id=contact.id %}" method="post">

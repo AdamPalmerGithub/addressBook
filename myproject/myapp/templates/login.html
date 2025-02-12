@@ -91,12 +91,14 @@ p {
     <script src="{% static 'js/main.js' %}"></script>
 </head>
 <body>
-<div class="card-container">
+<header>
     <select id="mode" onchange="choice(mode.value)">
         <option value="system" selected disabled>System</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
     </select>
+</header>
+<div class="card-container">
     <p>{{ error }}</p>
     <form name="login" method="post" action="../loginuser/">
         <h2 style="text-align:center;">Login</h2>

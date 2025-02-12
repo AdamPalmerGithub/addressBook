@@ -85,29 +85,29 @@ a:hover, button:hover {
  </style>
 </head>
 <body>
- <div class="main-container">
- <div class="heading-section">
- <h1>Address Book</h1>
-<p class="emphasis">The best way to record your contacts</p>
- <div class="buttons">
- <a id="login" href="/login">Login</a>
-<a id="signup" href="/signup">Signup</a>
- </div>
- </div>
-<div class="card-container">
-<div class="date-time-card">
- <h2>Current Date and Time</h2>
- <p id="date"><strong>Date:</strong> {{ date }}</p>
- <p id="time"><strong>Time:</strong> {{ time }}</p>
- </div>
- <div class="weather-card">
- <h2>Weather</h2>
-<p id="temp"><strong>Temperature:</strong> {{ temperature }}°C</p>
- <p id="humidity"><strong>Humidity:</strong> {{ humidity }}%</p>
-<button onclick="getLocation()">Use Current Location</button>
-</div>
- </div>
- </div>
+  <div class="main-container">
+    <div class="heading-section">
+      <h1>Address Book</h1>
+      <p class="emphasis">The best way to record your contacts</p>
+      <div class="buttons">
+        <a id="login" href="/login">Login</a>
+        <a id="signup" href="/signup">Signup</a>
+      </div>
+    </div>
+    <div class="card-container">
+       <div class="date-time-card">
+         <h2>Current Date and Time</h2>
+         <p id="date"><strong>Date:</strong> {{ date }}</p>
+         <p id="time"><strong>Time:</strong> {{ time }}</p>
+       </div>
+       <div class="weather-card">
+         <h2>Weather</h2>
+         <p id="temp"><strong>Temperature:</strong> {{ temperature }}°C</p>
+         <p id="humidity"><strong>Humidity:</strong> {{ humidity }}%</p>
+         <button onclick="getLocation()">Use Current Location</button>
+      </div>
+    </div>
+  </div>
  <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

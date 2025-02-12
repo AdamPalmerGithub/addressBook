@@ -9,45 +9,46 @@
 </head>
 <body>
 <header>
-    <a class="btn" href="../addressBook">Back</a>
     <select id="mode" onchange="choice(mode.value)">
             <option value="system" selected disabled>System</option>
             <option value="light">Light</option>
             <option value="dark">Dark</option>
     </select>
+    <a class="btn" href="../addressBook">Back</a>
 </header>
-<div class="update">
-    <form name="update" method="post" action="../update/">
-        <h2 style="text-align:center;">Update Information</h2>
-        <p>Updating account details will require login again.</p>
-        {% csrf_token %}
-        <label for="user">Username:</label>
-        <input type="text" id="user" name="user" value="{{ user.username }}">
-        <div class="names">
-            <div class="first">
-                <label for="first">Firstname:</label>
-                <input type="text" id="first" name="first" value="{{ user.first_name }}">
+<div class="main-container">
+    <div class="update">
+        <form name="update" method="post" action="../update/">
+            <h2 style="text-align:center;">Update Information</h2>
+            <p>Updating account details will require login again.</p>
+            {% csrf_token %}
+            <label for="user">Username:</label>
+            <input type="text" id="user" name="user" value="{{ user.username }}">
+            <div class="names">
+                <div class="first">
+                    <label for="first">Firstname:</label>
+                    <input type="text" id="first" name="first" value="{{ user.first_name }}">
+                </div>
+                <div class="last">
+                    <label for="last">Lastname:</label>
+                    <input type="text" id="last" name="last" value="{{ user.last_name }}">
+                </div>
             </div>
-            <div class="last">
-                <label for="last">Lastname:</label>
-                <input type="text" id="last" name="last" value="{{ user.last_name }}">
-            </div>
-        </div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ user.email }}">
-        <label for="contact">Contact Number:</label>
-        <input type="tel" id="contact" name="contact" value="{{ user.phone_number }}">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="{{ user.email }}">
+            <label for="contact">Contact Number:</label>
+            <input type="tel" id="contact" name="contact" value="{{ user.phone_number }}">
 
-        <label for="pwd">Password:</label>
-        <input id="pwd" name="pwd" type="password" placeholder="Enter a new password">
-        <p>Password will not change if field is left blank</p>
-        <input type="submit" class="btn conf" value="Confirm Updates">
-    </form>
-</div>
-
-<div class="delete">
+            <label for="pwd">Password:</label>
+            <input id="pwd" name="pwd" type="password" placeholder="Enter a new password">
+            <p>Password will not change if field is left blank</p>
+            <input type="submit" class="btn conf" value="Confirm Updates">
+        </form>
+    </div>
+    <div class="delete">
     <h3>This will permanently delete your account and it's data.</h3>
     <a class="btn del" href="../delete" onclick="return confirm('Are you sure? This will delete all data associated with user profile.');">Delete User</a>
+</div>
 </div>
 </body>
 </html>

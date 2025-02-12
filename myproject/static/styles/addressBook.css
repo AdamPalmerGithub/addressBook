@@ -65,6 +65,14 @@ table {
 th, td {
     padding: 10px;
     text-align: left;
+    color: light-dark(black, white)
+}
+label, td {
+    color: light-dark(black, white)
+}
+input[type="text"] {
+   border-radius: 10px;
+   padding: 3px;
 }
 a {
     display: inline-block;
