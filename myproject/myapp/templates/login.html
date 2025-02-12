@@ -5,17 +5,98 @@
     <title>Login</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+    <style>
+ :root {
+  color-scheme: light dark;
+  --light: #e0e0f0;
+  --dark: #28283d;
+}
+
+.light {
+    color-scheme: light;
+}
+.dark {
+    color-scheme: dark;
+}
+body {
+    color: light-dark(var(--light), var(--dark));
+    background-color: light-dark(var(--light), var(--dark));
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #ffffff;
+}
+form {
+    color: light-dark(black, white);
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    color: light-dark(black, white);
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+a, button {
+    display: inline-block;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    background: rgba(255, 71, 126, 0.9);
+    color: #fff;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+}
+a:hover, button:hover{
+    background: rgba(255, 33, 86, 0.9);
+    transform: translateY(-3px);
+}
+p {
+    color: light-dark(black, white);
+    margin: 10px auto;
+}
+    </style>
     <script src="{% static 'js/main.js' %}"></script>
 </head>
 <body>
-<header>
+<div class="card-container">
     <select id="mode" onchange="choice(mode.value)">
         <option value="system" selected disabled>System</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
     </select>
-</header>
-<div>
     <p>{{ error }}</p>
     <form name="login" method="post" action="../loginuser/">
         <h2 style="text-align:center;">Login</h2>
@@ -24,7 +105,7 @@
         <input type="text" id="user" name="user" placeholder="Enter your Username">
         <label for="pwd">Password:</label>
         <input id="pwd" name="pwd" type="password" placeholder="Enter a password">
-        <input type="submit" name="reg" value="Click to Login">
+        <button type="submit" name="reg"> Click to Login </button>
     </form>
     <a id="signup" href="/signup">Not got an account? Signup today :)</a>
 </div>
