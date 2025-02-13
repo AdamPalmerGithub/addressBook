@@ -17,11 +17,22 @@ class ContactForm(forms.Form):
     tags = forms.CharField(widget=forms.TextInput(), required=False, label="Tags (comma-separated)")
 
 class UserUpdateForm(forms.Form):
-    username = forms.CharField(max_length=20, required=False, label="Username")
+    username = forms.CharField(max_length=20, required=True, label="Username")
     first_name = forms.CharField(max_length=100, required=True, label="First Name")
     last_name = forms.CharField(max_length=100, required=True, label="Last Name")
-    email_address = forms.EmailField(required=False, label="Email")
+    email_address = forms.EmailField(required=True, label="Email")
     phone_number = forms.CharField(max_length=15, required=True, label="Phone Number")
+    password = forms.CharField(
+        max_length=50,
+        required=False,
+        label="Password",
+        widget=forms.PasswordInput(
+            attrs={
+                'placeholder': 'Enter your password',
+                'class': 'form-inputs',
+            }
+        )
+    )
 
 class ContactUpdateForm(forms.Form):
     first_name = forms.CharField(max_length=100, required=True, label="First Name")

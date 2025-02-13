@@ -17,7 +17,7 @@
 </header>
 <div class="card-container">
     <p>{{ error }}</p>
-    <form name="login" method="post" action="../loginuser/">
+    <form name="login" method="post" action="/login/">
         <h2 style="text-align:center;">Login</h2>
         {% csrf_token %}
         {{ loginForm }}
