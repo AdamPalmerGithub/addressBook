@@ -9,6 +9,9 @@ class ABUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone_number = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
 # Tag - allows multiple tags to be associated with a contact
 class Tag(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
