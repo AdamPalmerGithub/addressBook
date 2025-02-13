@@ -33,10 +33,16 @@ def landing(request):
 
 def login(request):
     if request.method == "POST":
-        auth_user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
-        if auth_user is not None:
-            auth_in(request, auth_user)
-            return redirect("addressBook")
+        login_form = LoginForm(request.POST)
+
+        if login_form.is_valid():
+            auth_user = authenticate(request, username=login_form.cleaned_data.get('username'), password=login_form.cleaned_data.get('password'))
+            if auth_user is not None:
+                auth_in(request, auth_user)
+                return redirect("addressBook")
+            else:
+                login_form = LoginForm()
+                return render(request, "login.html", {"error": "Invalid Credentials", "loginForm": login_form})
         else:
             login_form = LoginForm()
             return render(request, "login.html", {"error": "Invalid Credentials", "loginForm": login_form})
@@ -46,22 +52,27 @@ def login(request):
 
 
 def signup(request):
-    if request.method =="POST":
+    if request.method == "POST":
         user_group = Group.objects.get(name='user')
         form = SignUpForm(request.POST)
-        new_user = ABUser.objects.create_user(
-            username=form.username,
-            first_name=form.first_name,
-            last_name=form['last'],
-            password=form['pwd'],
-            phone_number=form['contact'],
-            email=form['email'],
-        )
-        new_user.groups.add(user_group)
+        if form.is_valid():
+            new_user = ABUser.objects.create_user(
+                username=form.cleaned_data.get('username'),
+                first_name=form.cleaned_data.get('first_name'),
+                last_name=form.cleaned_data.get('last_name'),
+                password=form.cleaned_data.get('password'),
+                phone_number=form.cleaned_data.get('phone_number'),
+                email=form.cleaned_data.get('email'),
+            )
+            new_user.groups.add(user_group)
 
-        return redirect("login")
+            return redirect("login")
+        else:
+            sign_up = SignUpForm()
+            return render(request, "signup.html", {"signUpForm": sign_up})
     else:
-        return render(request, "signup.html", {})
+        form = SignUpForm()
+        return render(request, "signup.html", {"signUpForm": form})
 
 
 def logout(request):
