@@ -38,7 +38,8 @@ def login(request):
             auth_in(request, auth_user)
             return redirect("addressBook")
         else:
-            return render(request, "login.html", {"error": "Invalid Credentials"})
+            login_form = LoginForm()
+            return render(request, "login.html", {"error": "Invalid Credentials", "loginForm": login_form})
     else:
         login_form = LoginForm()
         return render(request, "login.html", {"loginForm":login_form})
