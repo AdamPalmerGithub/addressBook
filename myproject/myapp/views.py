@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
 from datetime import datetime
 import requests
+from .forms import ContactForm, ContactUpdateForm, UserUpdateForm, LoginForm
+
 
 # Create your views here.
 def landing(request):
@@ -30,7 +32,8 @@ def landing(request):
 
 
 def login(request):
-    return render(request, "login.html", {})
+    login_form = LoginForm()
+    return render(request, "login.html", {"loginForm":login_form})
 
 
 def signup(request):
@@ -53,7 +56,7 @@ def adduser(request):
 
 
 def loginuser(request):
-    auth_user = authenticate(request, username=request.POST.get('user'), password=request.POST.get('pwd'))
+    auth_user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
     if auth_user is not None:
         auth_in(request, auth_user)
         return redirect("addressBook")
@@ -108,7 +111,8 @@ def addressBook(request):
 @permission_required('myapp.view_contact', login_url="login")
 @login_required(login_url="login")
 def addContact(request):
-    return render(request, "addContact.html", {})
+    form = ContactForm()
+    return render(request, "addContact.html", {"addForm": form})
 
 
 @permission_required('myapp.add_contact', login_url="login")
@@ -142,7 +146,23 @@ def addContactsubmit(request):
 @login_required(login_url="login")
 def updateContact(request, id):
     contact = get_object_or_404(Contact, id=id)
-    return render(request, "updateContact.html", {"contact": contact})
+    update_form = ContactUpdateForm()
+    update_form.fields['first_name'].initial = contact.first_name
+    update_form.fields['last_name'].initial = contact.last_name
+    update_form.fields['phone_number'].initial = contact.phone_number
+    update_form.fields['email_address'].initial = contact.email_address
+    update_form.fields['postcode'].initial = contact.postcode
+
+    all_tags = contact.tags.all()
+
+    tag_values = [tag.name for tag in all_tags]
+    tags = ""
+    for i in range(len(tag_values)):
+        tags += f"{tag_values[i]}, "
+    update_form.fields['tags'].initial = tags
+
+
+    return render(request, "updateContact.html", {"contact": contact, "updateForm": update_form})
 
 
 
@@ -179,12 +199,17 @@ def deleteContact(request, id):
 
 @login_required(login_url="login")
 def settings(request):
-    return render(request, "settings.html")
+    user = ABUser.objects.get(id=request.user.id)
+    update_form = UserUpdateForm()
+    update_form.fields['username'].initial = user.username
+    update_form.fields['first_name'].initial = user.first_name
+    update_form.fields['last_name'].initial = user.last_name
+    update_form.fields['phone_number'].initial = user.phone_number
+    update_form.fields['email_address'].initial = user.email
 
-@login_required(login_url="login")
-def updateUser(request):
-    user = request.user
-    return render(request, "updateUser.html", {"user":user})
+
+    # TODO: delete form
+    return render(request, "settings.html", {"updateForm": update_form})
 
 @permission_required(perm='myapp.change_abuser', login_url="login")
 @login_required(login_url="login")

@@ -22,25 +22,7 @@
             <h2 style="text-align:center;">Update Information</h2>
             <p>Updating account details will require login again.</p>
             {% csrf_token %}
-            <label for="user">Username:</label>
-            <input type="text" id="user" name="user" value="{{ user.username }}">
-            <div class="names">
-                <div class="first">
-                    <label for="first">Firstname:</label>
-                    <input type="text" id="first" name="first" value="{{ user.first_name }}">
-                </div>
-                <div class="last">
-                    <label for="last">Lastname:</label>
-                    <input type="text" id="last" name="last" value="{{ user.last_name }}">
-                </div>
-            </div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" value="{{ user.email }}">
-            <label for="contact">Contact Number:</label>
-            <input type="tel" id="contact" name="contact" value="{{ user.phone_number }}">
-
-            <label for="pwd">Password:</label>
-            <input id="pwd" name="pwd" type="password" placeholder="Enter a new password">
+            {{updateForm}}
             <p>Password will not change if field is left blank</p>
             <input type="submit" class="btn conf" value="Confirm Updates">
         </form>
