@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import ABUser, Contact
+from .models import ABUser, Contact, Tag
 from django.contrib.auth import authenticate, login as auth_in, logout as auth_out
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
@@ -75,6 +75,7 @@ def addressBook(request):
     sort_by = request.GET.get("sort", "first_name")
     order_by = request.GET.get("order", "asc")
     search_query = request.GET.get("search", "").strip()
+    selected_tags = request.GET.getlist("tags")
 
     sorted_field = f"-{sort_by}" if order_by == "desc" else sort_by
 
@@ -86,16 +87,22 @@ def addressBook(request):
             Q(last_name__icontains=search_query) |  
             Q(email_address__icontains=search_query)
     )
+        
+    if selected_tags and "" not in selected_tags:
+        mycontacts = mycontacts.filter(tags__id__in=selected_tags).distinct()
 
     mycontacts = mycontacts.order_by(sorted_field)
+    all_tags = Tag.objects.filter(user=user)
 
     return render(request, "addressBook.html", {
-    "user": user,
-    "mycontacts": mycontacts,
-    "sort_by": sort_by,
-    "order_by": order_by,
-    "search_query": search_query
-})
+        "user": user,
+        "mycontacts": mycontacts,
+        "sort_by": sort_by,
+        "order_by": order_by,
+        "search_query": search_query,
+        "all_tags": all_tags,
+        "selected_tags": selected_tags
+    })
 
 
 @permission_required('myapp.view_contact', login_url="login")
@@ -113,8 +120,9 @@ def addContactsubmit(request):
         email_address = request.POST.get('email_address', None)
         phone_number = request.POST.get('phone_number', None)
         postcode = request.POST.get('postcode', None)
+        tag_names = request.POST.get('tags', '')
         # Create and save new contact
-        Contact.objects.create(
+        contact = Contact.objects.create(
             addr_bk_id=request.user,
             first_name=first_name,
             last_name=last_name,
@@ -122,6 +130,11 @@ def addContactsubmit(request):
             phone_number=phone_number,
             postcode=postcode
         )
+        tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
+        for tag_name in tag_names:
+            tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
+            contact.tags.add(tag)
+
         return redirect('addressBook')
     return render(request, "addContact.html")
 
@@ -130,7 +143,6 @@ def addContactsubmit(request):
 def updateContact(request, id):
     contact = get_object_or_404(Contact, id=id)
     return render(request, "updateContact.html", {"contact": contact})
-
 
 
 
@@ -146,6 +158,14 @@ def updateContactSubmit(request, id=id):
         contact.phone_number = request.POST["phone_number"]
         contact.postcode = request.POST["postcode"]
         contact.save()
+
+        tag_names = request.POST.get('tags', '')  # Get tags as comma-separated string
+        tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
+
+        contact.tags.clear()
+        for tag_name in tag_names:
+            tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
+            contact.tags.add(tag)
 
         return redirect("addressBook")
     return render(request, "updateContact.html", {"contact": contact})

@@ -40,6 +40,10 @@
                 <label for="postcode">Postcode:</label>
                 <input type="text" id="postcode" name="postcode">
             </div>
+            <div>
+                <label>Tags (comma-separated):</label>
+                <input type="text" name="tags" value="{% for tag in contact.tags.all %}{{ tag.name }}, {% endfor %}">                
+            </div>
             <button type="submit">Submit</button>
         </form>
     </div>

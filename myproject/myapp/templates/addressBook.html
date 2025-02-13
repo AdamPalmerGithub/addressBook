@@ -36,6 +36,14 @@
             <label for="search">Search:</label>
             <input type="text" name="search" id="search" placeholder="Enter name or email..." value="{{ search_query|default:'' }}">
 
+            <label for="tags">Filter by Tags:</label>
+            <select name="tags" id="tags" multiple>
+                <option value="" {% if not selected_tags %}selected{% endif %}>Show All</option>
+                {% for tag in all_tags %}
+                    <option value="{{ tag.id }}" {% if tag.id|stringformat:"s" in selected_tags %}selected{% endif %}>{{ tag.name }}</option>
+                {% endfor %}
+            </select>
+
             <button type="submit">Sort</button>
         </form>
 
@@ -46,6 +54,7 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Postcode</th>
+                <th>Tags</th>
             </tr>
             {% for contact in mycontacts %}
                 <tr>
@@ -54,6 +63,13 @@
                     <td>{{ contact.email_address }}</td>
                     <td>{{ contact.phone_number }}</td>
                     <td>{{ contact.postcode }}</td>
+                    <td>
+                        {% for tag in contact.tags.all %}
+                            <span class="tag">{{ tag.name }}</span>
+                        {% endfor %}
+                    </td>
+
+
                     <td>
                         <a id="update" href="{% url 'updateContact' id=contact.id %}" class="btn">
                             Update
