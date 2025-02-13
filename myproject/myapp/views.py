@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
 from datetime import datetime
 import requests
-from .forms import ContactForm, ContactUpdateForm, UserUpdateForm, LoginForm
+from .forms import ContactForm, ContactUpdateForm, UserUpdateForm, LoginForm, SignUpForm
 
 
 # Create your views here.
@@ -37,17 +37,20 @@ def login(request):
 
 
 def signup(request):
-    return render(request, "signup.html", {})
+    signUpForm = SignUpForm()
+    return render(request, "signup.html", {"signUpForm": signUpForm})
 
 
 def adduser(request):
+    
     user_group = Group.objects.get(name='user')
+
     new_user = ABUser.objects.create_user(
-        username=request.POST['user'],
-        first_name=request.POST['first'],
-        last_name=request.POST['last'],
-        password=request.POST['pwd'],
-        phone_number=request.POST['contact'],
+        username=request.POST['username'],
+        first_name=request.POST['first_name'],
+        last_name=request.POST['last_name'],
+        password=request.POST['password'],
+        phone_number=request.POST['phone_number'],
         email=request.POST['email'],
     )
     new_user.groups.add(user_group)

@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import  PasswordInput
+from .models import ABUser
 
 
 class ContactForm(forms.Form):
@@ -54,3 +55,12 @@ class LoginForm(forms.Form):
         )
     )
 
+
+class SignUpForm(forms.Form):
+    username = forms.CharField(max_length=20, required=True, label="Username")
+    first_name = forms.CharField(max_length=100, required=True, label="First Name")
+    last_name = forms.CharField(max_length=100, required=True, label="Last Name")
+    email = forms.EmailField(required=True, label="Email")
+    phone_number = forms.CharField(max_length=15, required=True, label="Phone Number")
+    password = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput, label="Password")
+    
