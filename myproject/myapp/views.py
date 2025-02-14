@@ -242,22 +242,3 @@ def delete(request):
     del_user=ABUser.objects.get(id=request.user.id)
     del_user.delete()
     return redirect("login")
-
-@permission_required(perm="myapp.can_access_calendar", login_url="login")
-@login_required(login_url="login")
-def calendar(request, id):
-    event_participant = Contact.objects.get(id=id)
-
-    url = f"https://calendar.google.com/calendar/render?action=TEMPLATE&text=Event+with+{ event_participant.first_name }+{ event_participant.last_name }"
-
-    html_content = f"""
-            <html>
-                <body>
-                    <script type="text/javascript">
-                        window.open("{url}", "_blank");
-                        window.location.href = "/addressBook";
-                    </script>
-                </body>
-            </html>
-        """
-    return HttpResponse(html_content)
