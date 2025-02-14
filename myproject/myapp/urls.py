@@ -32,5 +32,4 @@ urlpatterns = [
     path('delete/', views.delete, name="delete"),
     path('deleteContact/<str:id>/', views.deleteContact, name='deleteContact'),
     path('updateContact/<str:id>/', views.updateContact, name='updateContact'),
-    path('calendar/<str:id>', views.calendar, name='calendar'),
 ]
