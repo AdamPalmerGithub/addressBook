@@ -7,13 +7,8 @@ class ContactForm(forms.Form):
     first_name = forms.CharField(max_length=100, required=True, label="First Name")
     last_name = forms.CharField(max_length=100, required=True, label="Last Name")
     email_address = forms.EmailField(required=False, label="Email")
-    phone_number = forms.CharField(max_length=15, required=True, label="Phone Number")
+    phone_number = forms.CharField(max_length=15, required=False, label="Phone Number")
     postcode = forms.CharField(max_length=20, required=False, label="Postcode")
-    # tags = forms.ModelMultipleChoiceField(
-    #     queryset=Tag.objects.all(),
-    #     widget=forms.CheckboxSelectMultiple,
-    #     required=False
-    # )
     tags = forms.CharField(widget=forms.TextInput(), required=False, label="Tags (comma-separated)")
 
 class UserUpdateForm(forms.Form):
