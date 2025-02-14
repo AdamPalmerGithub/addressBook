@@ -82,7 +82,7 @@ DATABASES = {
         "NAME": "ab_app",
         "USER": "root",
         "PASSWORD": "root",
-        "HOST":"",
+        "HOST":"localhost",
         "PORT":"3306",
     }
 }
