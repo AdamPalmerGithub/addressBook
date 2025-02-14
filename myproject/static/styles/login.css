@@ -50,6 +50,7 @@ body {
 }
 form {
     color: light-dark(black, white);
+    min-width: 250px;
     max-width: 400px;
     margin: auto;
     padding: 20px;
@@ -66,7 +67,6 @@ label {
 }
 
 .form-inputs {
-    width: 100%);
     padding: 8px 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;

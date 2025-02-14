@@ -140,3 +140,10 @@ a {
     font-size: 14px;
     margin-right: 5px;
 }
+
+.form-inputs {
+    padding: 5px 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
