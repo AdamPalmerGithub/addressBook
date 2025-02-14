@@ -1,6 +1,4 @@
 from django import forms
-from django.forms import  PasswordInput
-from .models import ABUser
 
 
 class ContactForm(forms.Form):
