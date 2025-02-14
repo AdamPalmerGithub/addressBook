@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import ABUser, Contact, Tag
+from .models import ABUser, Contact, Tag, generate_random_color
 from django.contrib.auth import authenticate, login as auth_in, logout as auth_out
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, permission_required
@@ -140,6 +140,11 @@ def addContactsubmit(request):
         tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
         for tag_name in tag_names:
             tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
+
+            if created or not tag.color:
+                tag.color = generate_random_color()
+                tag.save()
+
             contact.tags.add(tag)
 
         return redirect('addressBook')

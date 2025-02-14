@@ -63,9 +63,12 @@
                     <td>{{ contact.email_address }}</td>
                     <td>{{ contact.phone_number }}</td>
                     <td>{{ contact.postcode }}</td>
+                    
                     <td>
                         {% for tag in contact.tags.all %}
-                            <span class="tag">{{ tag.name }}</span>
+                        <span class="tag" style="background-color: {{ tag.color }};">
+                                {{ tag.name }}
+                            </span>
                         {% endfor %}
                     </td>
 

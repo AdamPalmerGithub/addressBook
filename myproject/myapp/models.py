@@ -1,4 +1,4 @@
-import uuid
+import uuid, random
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -9,11 +9,22 @@ class ABUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone_number = models.CharField(max_length=20)
 
+def generate_random_color():
+    """Generate a random hex color."""
+    colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFD700", "#FF69B4", "#ffbfbf", "#cdfa2a", "#11e3fa", "#8611fa"]
+    return random.choice(colors)
+
 # Tag - allows multiple tags to be associated with a contact
 class Tag(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, unique=True)  # Unique tag names
-    user = models.ForeignKey(ABUser, on_delete=models.CASCADE, related_name="tags")  # Tags belong to users
+    name = models.CharField(max_length=50, unique=True)
+    user = models.ForeignKey(ABUser, on_delete=models.CASCADE, related_name="tags")
+    color = models.CharField(max_length=7, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.color:
+            self.color = generate_random_color()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
