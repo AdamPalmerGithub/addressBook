@@ -94,3 +94,10 @@ p {
     color: light-dark(black, white);
     margin: 10px auto;
 }
+
+.form-inputs {
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
