@@ -9,10 +9,14 @@ class ABUser(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     phone_number = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
 def generate_random_color():
     """Generate a random hex color."""
     colors = ["#FF5733", "#33FF57", "#3357FF", "#FF33A1", "#FFD700", "#FF69B4", "#ffbfbf", "#cdfa2a", "#11e3fa", "#8611fa"]
     return random.choice(colors)
+
 
 # Tag - allows multiple tags to be associated with a contact
 class Tag(models.Model):

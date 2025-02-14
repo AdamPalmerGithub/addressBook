@@ -19,7 +19,7 @@
     </header>
     <h2>Enter Your Details</h2>
     <div class="add">
-        <form action="{% url 'addContactsubmit' %}" method="post">
+        <form action="{% url 'addContact' %}" method="post">
             {% csrf_token %}
             {{ addForm }}
             <button type="submit">Submit</button>

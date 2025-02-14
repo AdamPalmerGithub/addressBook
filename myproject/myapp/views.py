@@ -32,46 +32,52 @@ def landing(request):
 
 
 def login(request):
-    login_form = LoginForm()
-    return render(request, "login.html", {"loginForm":login_form})
+    if request.method == "POST":
+        login_form = LoginForm(request.POST)
+
+        if login_form.is_valid():
+            auth_user = authenticate(request, username=login_form.cleaned_data.get('username'), password=login_form.cleaned_data.get('password'))
+            if auth_user is not None:
+                auth_in(request, auth_user)
+                return redirect("addressBook")
+            else:
+                login_form = LoginForm()
+                return render(request, "login.html", {"error": "Invalid Credentials", "loginForm": login_form})
+        else:
+            login_form = LoginForm()
+            return render(request, "login.html", {"error": "Invalid Credentials", "loginForm": login_form})
+    else:
+        login_form = LoginForm()
+        return render(request, "login.html", {"loginForm":login_form})
 
 
 def signup(request):
-    signUpForm = SignUpForm()
-    return render(request, "signup.html", {"signUpForm": signUpForm})
+    if request.method == "POST":
+        user_group = Group.objects.get(name='user')
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            new_user = ABUser.objects.create_user(
+                username=form.cleaned_data.get('username'),
+                first_name=form.cleaned_data.get('first_name'),
+                last_name=form.cleaned_data.get('last_name'),
+                password=form.cleaned_data.get('password'),
+                phone_number=form.cleaned_data.get('phone_number'),
+                email=form.cleaned_data.get('email'),
+            )
+            new_user.groups.add(user_group)
 
-
-def adduser(request):
-    
-    user_group = Group.objects.get(name='user')
-
-    new_user = ABUser.objects.create_user(
-        username=request.POST['username'],
-        first_name=request.POST['first_name'],
-        last_name=request.POST['last_name'],
-        password=request.POST['password'],
-        phone_number=request.POST['phone_number'],
-        email=request.POST['email'],
-    )
-    new_user.groups.add(user_group)
-
-    return redirect("login")
-
-
-def loginuser(request):
-    auth_user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password'))
-    if auth_user is not None:
-        auth_in(request, auth_user)
-        return redirect("addressBook")
+            return redirect("login")
+        else:
+            sign_up = SignUpForm()
+            return render(request, "signup.html", {"signUpForm": sign_up})
     else:
-        return render(request, "login.html", {"error": "Invalid Credentials"})
+        form = SignUpForm()
+        return render(request, "signup.html", {"signUpForm": form})
 
 
-def logoutuser(request):
+def logout(request):
     auth_out(request)
     return redirect("landing")
-
-  
 
 
 @permission_required('myapp.view_contact', login_url="login")
@@ -111,92 +117,83 @@ def addressBook(request):
     })
 
 
+@permission_required('myapp.add_contact', login_url="login")
 @permission_required('myapp.view_contact', login_url="login")
 @login_required(login_url="login")
 def addContact(request):
-    form = ContactForm()
-    return render(request, "addContact.html", {"addForm": form})
-
-
-@permission_required('myapp.add_contact', login_url="login")
-@login_required(login_url="login")
-def addContactsubmit(request):
     if request.method == "POST":
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email_address = request.POST.get('email_address', None)
-        phone_number = request.POST.get('phone_number', None)
-        postcode = request.POST.get('postcode', None)
-        tag_names = request.POST.get('tags', '')
-        # Create and save new contact
-        contact = Contact.objects.create(
-            addr_bk_id=request.user,
-            first_name=first_name,
-            last_name=last_name,
-            email_address=email_address,
-            phone_number=phone_number,
-            postcode=postcode
-        )
-        tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
-        for tag_name in tag_names:
-            tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
+        add_form = ContactForm(request.POST)
+        if add_form.is_valid():
+            first_name = add_form.cleaned_data.get('first_name')
+            last_name = add_form.cleaned_data.get('last_name')
+            email_address = add_form.cleaned_data.get('email_address', None)
+            phone_number = add_form.cleaned_data.get('phone_number', None)
+            postcode = add_form.cleaned_data.get('postcode', None)
+            tag_names = add_form.cleaned_data.get('tags', '')
+            # Create and save new contact
+            contact = Contact.objects.create(
+                addr_bk_id=request.user,
+                first_name=first_name,
+                last_name=last_name,
+                email_address=email_address,
+                phone_number=phone_number,
+                postcode=postcode
+            )
+            tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
+            for tag_name in tag_names:
+                tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
+                contact.tags.add(tag)
 
-            if created or not tag.color:
-                tag.color = generate_random_color()
-                tag.save()
-
-            contact.tags.add(tag)
-
-        return redirect('addressBook')
-    return render(request, "addContact.html")
-
-
-@login_required(login_url="login")
-def updateContact(request, id):
-    contact = get_object_or_404(Contact, id=id)
-    update_form = ContactUpdateForm()
-    update_form.fields['first_name'].initial = contact.first_name
-    update_form.fields['last_name'].initial = contact.last_name
-    update_form.fields['phone_number'].initial = contact.phone_number
-    update_form.fields['email_address'].initial = contact.email_address
-    update_form.fields['postcode'].initial = contact.postcode
-
-    all_tags = contact.tags.all()
-
-    tag_values = [tag.name for tag in all_tags]
-    tags = ""
-    for i in range(len(tag_values)):
-        tags += f"{tag_values[i]}, "
-    update_form.fields['tags'].initial = tags
-
-
-    return render(request, "updateContact.html", {"contact": contact, "updateForm": update_form})
-
+            return redirect('addressBook')
+    else:
+        form = ContactForm()
+        return render(request, "addContact.html", {"addForm": form})
 
 
 @permission_required('myapp.change_contact', login_url="login")
 @login_required(login_url="login")
-def updateContactSubmit(request, id=id):
-    contact = get_object_or_404(Contact, id=id)
-
+def updateContact(request, id):
     if request.method == "POST":
-        contact.first_name = request.POST["first_name"]
-        contact.last_name = request.POST["last_name"]
-        contact.email_address = request.POST["email_address"]
-        contact.phone_number = request.POST["phone_number"]
-        contact.postcode = request.POST["postcode"]
-        contact.save()
+        contact = get_object_or_404(Contact, id=id)
 
-        tag_names = request.POST.get('tags', '')  # Get tags as comma-separated string
-        tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
+        updated_form = ContactUpdateForm(request.POST)
 
-        contact.tags.clear()
-        for tag_name in tag_names:
-            tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
-            contact.tags.add(tag)
+        if updated_form.is_valid():
+            contact.first_name = updated_form.cleaned_data["first_name"]
+            contact.last_name = updated_form.cleaned_data["last_name"]
+            contact.email_address = updated_form.cleaned_data["email_address"]
+            contact.phone_number = updated_form.cleaned_data["phone_number"]
+            contact.postcode = updated_form.cleaned_data["postcode"]
+            contact.save()
 
-        return redirect("addressBook")
-    return render(request, "updateContact.html", {"contact": contact})
+            tag_names = updated_form.cleaned_data.get('tags', '')  # Get tags as comma-separated string
+            tag_names = [t.strip() for t in tag_names.split(',') if t.strip()]  # Clean list
+
+            contact.tags.clear()
+            for tag_name in tag_names:
+                tag, created = Tag.objects.get_or_create(name=tag_name, user=request.user)
+                contact.tags.add(tag)
+
+            return redirect("addressBook")
+    else:
+        contact = get_object_or_404(Contact, id=id)
+        update_form = ContactUpdateForm()
+        update_form.fields['first_name'].initial = contact.first_name
+        update_form.fields['last_name'].initial = contact.last_name
+        update_form.fields['phone_number'].initial = contact.phone_number
+        update_form.fields['email_address'].initial = contact.email_address
+        update_form.fields['postcode'].initial = contact.postcode
+
+        all_tags = contact.tags.all()
+
+        tag_values = [tag.name for tag in all_tags]
+        tags = ""
+        for i in range(len(tag_values)):
+            tags += f"{tag_values[i]}, "
+        update_form.fields['tags'].initial = tags
+
+        return render(request, "updateContact.html", {"contact": contact,"updateForm": update_form})
+
 
 @permission_required('myapp.delete_contact', login_url="login")
 @login_required(login_url="login")
@@ -205,39 +202,39 @@ def deleteContact(request, id):
     contact.delete()
     return redirect('addressBook')
 
-@login_required(login_url="login")
-def settings(request):
-    user = ABUser.objects.get(id=request.user.id)
-    update_form = UserUpdateForm()
-    update_form.fields['username'].initial = user.username
-    update_form.fields['first_name'].initial = user.first_name
-    update_form.fields['last_name'].initial = user.last_name
-    update_form.fields['phone_number'].initial = user.phone_number
-    update_form.fields['email_address'].initial = user.email
-
-
-    # TODO: delete form
-    return render(request, "settings.html", {"updateForm": update_form})
 
 @permission_required(perm='myapp.change_abuser', login_url="login")
 @login_required(login_url="login")
-def update(request):
+def settings(request):
     if request.method == "POST":
         user=ABUser.objects.get(id=request.user.id)
 
-        user.username = request.POST.get("user")
-        user.first_name = request.POST.get("first")
-        user.last_name = request.POST.get("last")
-        user.phone_number = request.POST.get("contact")
-        user.email = request.POST.get("email")
+        updated_form = UserUpdateForm(request.POST)
 
-        password=request.POST.get("pwd")
-        if len(password) > 1:
-            user.set_password(password)
+        if updated_form.is_valid():
+            user.username = updated_form.cleaned_data['username']
+            user.first_name = updated_form.cleaned_data['first_name']
+            user.last_name = updated_form.cleaned_data['last_name']
+            user.phone_number = updated_form.cleaned_data['phone_number']
+            user.email = updated_form.cleaned_data['email_address']
 
-        user.save()
-        return redirect("login")
-    return render(request,"settings.html", {"user",request.user})
+            password = updated_form.cleaned_data.get('password')
+            if len(password) > 1:
+                user.set_password(password)
+
+            user.save()
+            return redirect("login")
+    else:
+        user = ABUser.objects.get(id=request.user.id)
+        update_form = UserUpdateForm()
+        update_form.fields['username'].initial = user.username
+        update_form.fields['first_name'].initial = user.first_name
+        update_form.fields['last_name'].initial = user.last_name
+        update_form.fields['phone_number'].initial = user.phone_number
+        update_form.fields['email_address'].initial = user.email
+        # TODO: delete form
+        return render(request,"settings.html", {"updateForm": update_form})
+
 
 @permission_required(perm='myapp.delete_abuser', login_url="login")
 @login_required(login_url="login")

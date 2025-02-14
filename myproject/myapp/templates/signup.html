@@ -17,13 +17,13 @@
     </select>
 </header>
     <div class="card-container">
-    <form name="signup" method="post" action="../adduser/">
+    <form name="signup" method="post" action="/signup/">
         <h2 style="text-align:center;">Signup</h2>
 
             {% csrf_token %}
             {{ signUpForm }}
 
-        <button type="submit" name="reg">Click to Register</button>
+        <button type="submit">Click to Register</button>
     </form>
         <a id="login" href="/login">Got an account? Login here :)</a>
     </div>
